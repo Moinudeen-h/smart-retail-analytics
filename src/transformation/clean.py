@@ -101,6 +101,15 @@ def clean_sales(df):
     for col in numeric_columns:
         df[col] = df[col].fillna(0)
 
+    # Calculate sales amount
+
+    if all(col in df.columns for col in ["quantity", "unit_price", "discount"]):
+
+        df["sales_amount"] = (
+            df["quantity"] * df["unit_price"]
+            - df["discount"]
+        )
+
     return df
 
 
@@ -122,3 +131,114 @@ def clean_date(df):
         )
 
     return df
+
+def prepare_sales_fact(
+    sales,
+    customers,
+    products
+):
+    """
+    Convert sales transaction data
+    into warehouse fact table format
+    """
+
+    sales = sales.copy()
+
+    # Map customer IDs to customer keys
+
+    sales = sales.merge(
+        customers[
+            [
+                "customer_id",
+                "customer_key"
+            ]
+        ],
+        on="customer_id",
+        how="left"
+    )
+
+
+    # Map product IDs to product keys
+
+    sales = sales.merge(
+        products[
+            [
+                "product_id",
+                "product_key"
+            ]
+        ],
+        on="product_id",
+        how="left"
+    )
+
+
+    # Remove original IDs
+
+    sales.drop(
+        columns=[
+            "customer_id",
+            "product_id"
+        ],
+        inplace=True
+    )
+    
+    sales["date_key"] = (
+        sales["sale_date"]
+        .dt.strftime("%Y%m%d")
+        .astype(int)
+    )
+
+
+    sales.drop(
+        columns=["sale_date"],
+        inplace=True
+    )
+
+    return sales
+
+def prepare_date_dimension(sales):
+
+    dates = sales[["sale_date"]].drop_duplicates()
+
+    dates["full_date"] = dates["sale_date"]
+
+    dates["date_key"] = (
+        dates["full_date"]
+        .dt.strftime("%Y%m%d")
+        .astype(int)
+    )
+
+    dates["day"] = dates["full_date"].dt.day
+
+    dates["month"] = dates["full_date"].dt.month
+
+    dates["month_name"] = (
+        dates["full_date"]
+        .dt.month_name()
+    )
+
+    dates["quarter"] = (
+        "Q" +
+        dates["full_date"]
+        .dt.quarter
+        .astype(str)
+    )
+
+    dates["year"] = (
+        dates["full_date"]
+        .dt.year
+    )
+
+    dates["weekday"] = (
+        dates["full_date"]
+        .dt.day_name()
+    )
+
+
+    dates.drop(
+        columns=["sale_date"],
+        inplace=True
+    )
+
+
+    return dates
