@@ -19,6 +19,16 @@ CREATE TABLE dim_products (
     supplier VARCHAR(100)
 );
 
+CREATE TABLE dim_date (
+    date_key INTEGER PRIMARY KEY,
+    full_date DATE UNIQUE NOT NULL,
+    day INTEGER,
+    month INTEGER,
+    month_name VARCHAR(20),
+    quarter VARCHAR(10),
+    year INTEGER,
+    weekday VARCHAR(20)
+);
 
 CREATE TABLE fact_sales (
     sale_key SERIAL PRIMARY KEY,
@@ -26,7 +36,6 @@ CREATE TABLE fact_sales (
 
     customer_key INTEGER REFERENCES dim_customers(customer_key),
     product_key INTEGER REFERENCES dim_products(product_key),
-
     date_key INTEGER REFERENCES dim_date(date_key),
 
     quantity INTEGER,
