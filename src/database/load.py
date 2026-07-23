@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 from dotenv import load_dotenv
 import os
 
-from src.transformation.clean import clean_customers
+from src.transformation.clean_customers import clean_customers
 
 
 load_dotenv()
