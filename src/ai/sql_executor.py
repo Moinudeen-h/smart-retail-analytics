@@ -20,7 +20,13 @@ def execute_sql(query):
 
             return {
                 "columns": list(columns),
-                "data": [list(row) for row in rows]
+                "data": [
+                    [
+                        float(value) if hasattr(value, "as_tuple") else value
+                        for value in row
+                    ]
+                    for row in rows
+                ]
             }
 
     except Exception as e:
