@@ -1,12 +1,18 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from dotenv import load_dotenv
 import os
-
 import pandas as pd
-from sqlalchemy import text
 
 
 load_dotenv()
+
+
+# Create reusable database engine
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+engine = create_engine(
+    DATABASE_URL
+)
 
 
 def load_to_database(df, table_name):
@@ -15,10 +21,6 @@ def load_to_database(df, table_name):
     """
 
     try:
-
-        database_url = os.getenv("DATABASE_URL")
-
-        engine = create_engine(database_url)
 
         df.to_sql(
             table_name,
@@ -33,15 +35,10 @@ def load_to_database(df, table_name):
     except Exception as e:
 
         print(f"Error loading {table_name}: {e}")
-        
+
 
 
 def get_dimension_keys(table_name, id_column, key_column):
-
-    database_url = os.getenv("DATABASE_URL")
-
-    engine = create_engine(database_url)
-
 
     query = text(
         f"""
