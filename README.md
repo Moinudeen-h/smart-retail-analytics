@@ -129,5 +129,3 @@ The AI assistant can seamlessly handle queries such as:
 ## 🎯 Project Objective
 
 This project demonstrates the integration of modern **Data Engineering and Generative AI technologies** to build an enterprise-style analytics platform capable of transforming raw business data into actionable intelligence.
-
-```
