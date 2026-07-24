@@ -192,4 +192,3 @@ streamlit run src/app/ai_dashboard.py
 
 This project demonstrates the integration of modern **Data Engineering, Business Intelligence, and Generative AI technologies** to build an enterprise-style analytics platform capable of transforming raw business data into actionable intelligence.
 
-```
