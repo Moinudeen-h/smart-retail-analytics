@@ -39,6 +39,14 @@ Power BI Dashboard     AI Analytics Copilot
 
 ---
 
+## 📸 Screenshots
+
+### Power BI Analytics Dashboard
+
+### AI Analytics Copilot
+
+---
+
 ## 🚀 Key Features
 
 ### Data Engineering Pipeline
@@ -67,8 +75,9 @@ Power BI Dashboard     AI Analytics Copilot
 
 > **Example Interaction:**
 > * **User:** What are the top 5 best-selling products by revenue?
-> * **AI Summary:** Based on the data, the top 5 best-selling products by revenue are Laptop (LKR 345,000), Smartphone (LKR 277,000), Smart Watch (LKR 165,000), Tablet (LKR 63,000), and Headphones (LKR 49,000).
+> * **AI Summary:** Based on the data, top-selling products are led by Laptops and Smartphones, accounting for over 60% of total revenue.
 > * **AI Recommendation:** Allocate more marketing resources to promote high-margin items like Laptops to maximize overall profitability.
+> 
 > 
 
 ---
@@ -89,9 +98,15 @@ Power BI Dashboard     AI Analytics Copilot
 smart-retail-analytics/
 │
 ├── data/
+│   ├── raw/
+│   └── processed/
 │
 ├── dashboard/
 │   └── Smart_Retail_Analytics_Dashboard.pbix
+│
+├── screenshots/
+│   ├── powerbi_dashboard.png
+│   └── ai_copilot.png
 │
 ├── src/
 │   │
@@ -109,7 +124,10 @@ smart-retail-analytics/
 │   └── app/
 │       └── ai_dashboard.py
 │
-└── README.md
+├── .env
+├── requirements.txt
+├── README.md
+└── .gitignore
 
 ```
 
@@ -126,8 +144,52 @@ The AI assistant can seamlessly handle queries such as:
 
 ---
 
+## ⚙️ Installation & Setup
+
+### 1. Clone Repository
+
+```bash
+git clone [https://github.com/Moinudeen-h/smart-retail-analytics.git](https://github.com/Moinudeen-h/smart-retail-analytics.git)
+cd smart-retail-analytics
+
+```
+
+### 2. Create Environment
+
+```bash
+conda create -n retail_analytics python=3.11
+conda activate retail_analytics
+
+```
+
+### 3. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+
+```
+
+### 4. Configure Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env
+DATABASE_URL=your_postgresql_connection_string
+GROQ_API_KEY=your_api_key
+
+```
+
+### 5. Run AI Analytics Copilot
+
+```bash
+streamlit run src/app/ai_dashboard.py
+
+```
+
+---
+
 ## 🎯 Project Objective
 
-This project demonstrates the integration of modern **Data Engineering and Generative AI technologies** to build an enterprise-style analytics platform capable of transforming raw business data into actionable intelligence.
+This project demonstrates the integration of modern **Data Engineering, Business Intelligence, and Generative AI technologies** to build an enterprise-style analytics platform capable of transforming raw business data into actionable intelligence.
 
 ```
