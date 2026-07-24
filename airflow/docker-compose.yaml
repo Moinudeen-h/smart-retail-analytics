@@ -1,0 +1,73 @@
+services:
+
+  postgres:
+    image: postgres:15
+    container_name: airflow-postgres
+
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+
+    ports:
+      - "5433:5432"
+
+
+  airflow-webserver:
+    image: apache/airflow:2.9.3
+
+    container_name: retail-airflow-webserver
+
+    depends_on:
+      - postgres
+
+    env_file:
+      - ../.env
+
+    environment:
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__WEBSERVER__SECRET_KEY: smart_retail_secret_key_2026
+
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ../:/opt/project
+
+    ports:
+      - "8080:8080"
+
+    command: >
+      bash -c "
+      airflow db migrate &&
+      airflow users create
+      --username admin
+      --password admin
+      --firstname Admin
+      --lastname User
+      --role Admin
+      --email admin@example.com || true &&
+      airflow webserver
+      "
+
+
+  airflow-scheduler:
+    image: apache/airflow:2.9.3
+
+    container_name: retail-airflow-scheduler
+
+    depends_on:
+      - postgres
+    
+    env_file:
+      - ../.env
+
+    environment:
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__WEBSERVER__SECRET_KEY: smart_retail_secret_key_2026
+
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ../:/opt/project
+
+    command: scheduler

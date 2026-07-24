@@ -1,8 +1,8 @@
 # 🛒 Smart Retail Analytics AI Copilot
 
-An end-to-end **AI-powered retail analytics platform** combining Data Engineering, Business Intelligence, and Large Language Models (LLMs).
+An end-to-end **AI-powered retail analytics platform** combining Data Engineering, Business Intelligence, Workflow Orchestration, and Large Language Models (LLMs).
 
-The system ingests retail transaction data, builds a PostgreSQL data warehouse using a star schema, provides interactive Power BI dashboards, and enables users to ask business questions in natural language through an LLM-powered analytics assistant.
+The system ingests raw retail transaction data, processes it through an automated ETL pipeline orchestrated with Apache Airflow, builds a PostgreSQL data warehouse using a star schema, provides interactive Power BI dashboards, and enables users to ask business questions through an LLM-powered analytics assistant.
 
 The AI assistant automatically converts natural language questions into SQL queries, executes them against the warehouse, and generates business insights.
 
@@ -11,39 +11,35 @@ The AI assistant automatically converts natural language questions into SQL quer
 ## 🏗️ System Architecture
 
 ```text
-Raw Retail Data
-       │
-       ▼
+Raw Retail Data (CSV)
+          │
+          ▼
 Python ETL Pipeline
-       │
-       ▼
-PostgreSQL Data Warehouse (Star Schema)
-       │
-       ├─────────────────────────┐
-       ▼                         ▼
-Power BI Dashboard     AI Analytics Copilot
-                                 │
-                                 ▼
-                     Natural Language Query
-                                 │
-                                 ▼
+          │
+          ▼
+Apache Airflow Orchestration
+          │
+          ▼
+PostgreSQL Data Warehouse
+(Star Schema)
+          │
+          ├──────────────────────┐
+          ▼                      ▼
+Power BI Dashboard        AI Analytics Copilot
+                                  │
+                                  ▼
+                      Natural Language Query
+                                  │
+                                  ▼
                              Text-to-SQL
-                                 │
-                                 ▼
-                        SQL Execution Engine
-                                 │
-                                 ▼
-                    Business Insight Generation
+                                  │
+                                  ▼
+                         SQL Execution Engine
+                                  │
+                                  ▼
+                    AI Business Insight Generation
 
 ```
-
----
-
-## 📸 Screenshots
-
-### Power BI Analytics Dashboard
-
-### AI Analytics Copilot
 
 ---
 
@@ -56,6 +52,37 @@ Power BI Dashboard     AI Analytics Copilot
 * Dimensional modeling using Star Schema
 * PostgreSQL data warehouse implementation
 * Fact and dimension table management
+
+## 🔄 Workflow Orchestration with Apache Airflow
+
+The retail ETL pipeline is automated and monitored using Apache Airflow running through Docker containers.
+
+Airflow manages the execution workflow by triggering the Python ETL pipeline and monitoring successful data loading into the PostgreSQL warehouse.
+
+### Airflow Workflow Features
+
+* Automated ETL pipeline scheduling
+* DAG-based workflow management
+* Pipeline execution monitoring
+* Data validation tracking
+* PostgreSQL warehouse loading
+* Docker-based deployment environment
+
+### Airflow Pipeline Execution Screenshots
+
+#### Airflow DAG Overview
+
+![Airflow DAG Overview](screenshots/airflow_dag.png)
+
+
+#### Airflow Graph View
+
+![Airflow Graph View](screenshots/airflow_graph.png)
+
+
+#### Successful ETL Execution Logs
+
+![Airflow Execution Logs](screenshots/airflow_logs.png)
 
 ### Business Intelligence
 
@@ -88,6 +115,8 @@ Power BI Dashboard     AI Analytics Copilot
 * **Business Intelligence:** Microsoft Power BI
 * **Artificial Intelligence:** Large Language Models (LLMs), Groq API, Text-to-SQL, Prompt Engineering
 * **Application Layer:** Streamlit
+* **Workflow Orchestration:** Apache Airflow
+* **Containerization:** Docker, Docker Compose
 * **Development Tools:** Git, GitHub, VS Code
 
 ---
@@ -98,15 +127,23 @@ Power BI Dashboard     AI Analytics Copilot
 smart-retail-analytics/
 │
 ├── data/
-│   ├── raw/
-│   └── processed/
+│   └── raw/
 │
 ├── dashboard/
 │   └── Smart_Retail_Analytics_Dashboard.pbix
 │
 ├── screenshots/
 │   ├── powerbi_dashboard.png
-│   └── ai_copilot.png
+│   ├── ai_copilot.png
+│   ├── airflow_dag.png
+│   ├── airflow_graph.png
+│   └── airflow_logs.png
+│
+├── airflow/
+│   ├── dags/
+│   │   └── retail_etl_dag.py
+│   │
+│   └── docker-compose.yml
 │
 ├── src/
 │   │
@@ -120,16 +157,24 @@ smart-retail-analytics/
 │   ├── database/
 │   ├── transformation/
 │   ├── validation/
-│   │
 │   └── app/
 │       └── ai_dashboard.py
 │
-├── .env
-├── requirements.txt
-├── README.md
-└── .gitignore
+└── README.md
 
 ```
+
+---
+
+## 📸 Screenshots
+
+### Power BI Analytics Dashboard
+
+![Power BI Dashboard](screenshots/powerbi_dashboard.png)
+
+### AI Analytics Copilot
+
+![AI Copilot](screenshots/ai_copilot.png)
 
 ---
 
@@ -186,9 +231,26 @@ streamlit run src/app/ai_dashboard.py
 
 ```
 
+### 6. Run Airflow Pipeline
+
+Navigate to the airflow directory:
+
+```bash
+cd airflow
+
+```
+
+Start Airflow using Docker Compose:
+
+```bash
+docker compose up
+
+```
+
+Access the Airflow dashboard at `http://localhost:8080`, then trigger the `smart_retail_etl_pipeline` DAG to execute the ETL workflow.
+
 ---
 
 ## 🎯 Project Objective
 
-This project demonstrates the integration of modern **Data Engineering, Business Intelligence, and Generative AI technologies** to build an enterprise-style analytics platform capable of transforming raw business data into actionable intelligence.
-
+This project demonstrates the integration of modern **Data Engineering, Business Intelligence, Workflow Orchestration, and Generative AI technologies** to build an enterprise-style analytics platform capable of transforming raw business data into actionable intelligence.

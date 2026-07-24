@@ -17,10 +17,17 @@ engine = create_engine(
 
 def load_to_database(df, table_name):
     """
-    Load dataframe into PostgreSQL table
+    Replace existing table contents and load fresh data.
     """
 
     try:
+
+        with engine.begin() as conn:
+            conn.execute(
+                text(
+                    f"TRUNCATE TABLE {table_name} RESTART IDENTITY CASCADE;"
+                )
+            )
 
         df.to_sql(
             table_name,
@@ -30,7 +37,6 @@ def load_to_database(df, table_name):
         )
 
         print(f"{table_name} loaded successfully ✅")
-
 
     except Exception as e:
 
